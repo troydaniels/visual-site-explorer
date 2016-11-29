@@ -14,7 +14,7 @@
   * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-  require_once __DIR__ . '/spider.php';
+  require_once __DIR__ . '/src/spider.php';
   if($_POST['domain']){
     $siteStructure = crawlSite($_POST['domain']);
     if(empty($siteStructure)){
@@ -28,9 +28,13 @@
 <html>
   <head>
     <title>Visual Site Explorer</title>
+    <link type="text/css" rel="stylesheet" href="/css/jquery.qtip.min.css" />
     <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1, maximum-scale=1">
     <script src="http://code.jquery.com/jquery-2.0.3.min.js"></script>
+    <script type="text/javascript" src="/js/jquery.qtip.min.js"></script>
     <script src="http://cytoscape.github.io/cytoscape.js/api/cytoscape.js-latest/cytoscape.min.js"></script>
+
+
 
     <style>
       body {
@@ -149,6 +153,20 @@
             });
           }
         }
+        //Add our tooltip
+        cy.on('mouseover', 'node', function(evt){
+          var node = evt.cyTarget;
+          node.qtip({
+            content: 'hello',
+            show: {
+              event: event.type,
+              ready: true
+           },
+           hide: {
+              event: 'mouseout unfocus'
+           }
+          }, event);
+        });
       });
     </script>
   </head>

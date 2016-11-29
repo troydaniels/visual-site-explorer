@@ -62,6 +62,8 @@ function curl_get_contents($URL){
   curl_setopt($ch, CURLOPT_HEADER, 0);
   curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
   curl_setopt($ch, CURLOPT_URL, $URL);
+  curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
+
 
   $data = curl_exec($ch);
 
