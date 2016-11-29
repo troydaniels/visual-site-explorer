@@ -1,3 +1,3 @@
 # visual-site-explorer
 Generate a visual, interactive sitemap in the browser 
-[[https://imgur.com/a/WDR8P]]
+![whiteboyeats.com.au sitemap](https://i.imgur.com/uPC7OMK.png)
