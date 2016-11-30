@@ -14,7 +14,7 @@
   * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-  require_once __DIR__ . '/src/spider.php';
+  require_once __DIR__ . '/spider.php';
   if($_POST['domain']){
     $siteStructure = crawlSite($_POST['domain']);
     if(empty($siteStructure)){
@@ -31,9 +31,10 @@
     <link type="text/css" rel="stylesheet" href="/css/jquery.qtip.min.css" />
     <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1, maximum-scale=1">
     <script src="http://code.jquery.com/jquery-2.0.3.min.js"></script>
-    <script type="text/javascript" src="/js/jquery.qtip.min.js"></script>
     <script src="http://cytoscape.github.io/cytoscape.js/api/cytoscape.js-latest/cytoscape.min.js"></script>
-
+    <script src="http://code.jquery.com/jquery-2.0.3.min.js"></script>
+    <script src="http://cdnjs.cloudflare.com/ajax/libs/qtip2/2.2.0/jquery.qtip.js"></script>
+    <script src="/js/cytoscape-qtip.js"></script>
 
 
     <style>
@@ -103,9 +104,6 @@
       for (const outprop in siteStructure) {
           var x = x0 + r * Math.cos(2 * Math.PI * ++i / items);
           var y = y0 + r * Math.sin(2 * Math.PI * ++i / items); 
-          console.log(x);
-          console.log(y);
-          console.log(items);
           cy.add(
             {"data":
               {"id":outprop,
@@ -133,9 +131,10 @@
       // And now the edges      
       for (const outprop in siteStructure) {
         for (const inprop in siteStructure[outprop]) {
+          var edgeId = outprop.concat(" -> ", inprop);
           cy.add(
             {"data":
-              {
+              {"id": edgeId,
               "source":outprop,
               "cited":0,
               "target":inprop,
@@ -154,18 +153,18 @@
           }
         }
         //Add our tooltip
-        cy.on('mouseover', 'node', function(evt){
-          var node = evt.cyTarget;
-          node.qtip({
-            content: 'hello',
-            show: {
-              event: event.type,
-              ready: true
-           },
-           hide: {
-              event: 'mouseout unfocus'
-           }
-          }, event);
+        cy.elements().qtip({
+          content: function(){ return this.id() },
+          position: {
+            my: 'top center',
+            at: 'bottom center'
+          },
+          style: {
+            classes: 'qtip-bootstrap',
+            tip: {
+              corner: false,
+            }
+          }
         });
       });
     </script>
